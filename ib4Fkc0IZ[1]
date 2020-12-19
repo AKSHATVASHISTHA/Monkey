@@ -1,0 +1,136 @@
+<!DOCTYPE html><html><head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js"></script>
+<script src="https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/536fa03a-477e-44b8-9d14-c8959d67ba24.js"></script>
+    
+    <meta charset="utf-8">
+
+  <base href="https://editor.p5js.org/akshatvashistha03/present/ib4Fkc0IZ/"><style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+</style></head>
+  <body>
+      <script>var PLAY=1;
+var END=0;
+var monkey , monkey_runningl;
+var banana ,bananaImage, obstacle, obstacleImage;
+var FoodGroup, obstaclesGroup;
+var s=0;
+var score=0;
+var gameState=PLAY;
+var junglee;
+var back1;
+
+
+function preload(){
+  
+  
+  monkey_running =            loadAnimation("https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/6d4fd9fa-016f-4c4a-9d7d-13df237b784c.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/1099db4f-86fc-4c6b-9ed3-76cf61410bcd.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/e899a538-1e94-4fc5-ba03-4b15032e60de.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/95785083-e72e-4443-95e6-940ca6b78070.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/23be0359-e1d5-4ae8-a5e3-f5d815835a1e.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/7e0c6652-d264-434f-af3c-7f07f2c4f8e9.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/8eb92029-43f3-4dd9-9ac5-6d2d08e3d619.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/44bb9e27-043d-44c4-8b50-ac35c496c7c3.png","https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/d89f30d1-f0a8-4dff-ad5c-7a51994d0242.png")
+  junglee = loadImage("https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/60b1c3a5-a867-4b9c-825d-01fe6eeff79f.jpg");
+  bananaImage = loadImage("https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/e53fa929-83f9-4883-b1ea-c89df580102c.png");
+  obstaceImage = loadImage("https://assets.editor.p5js.org/5f7b3273d201fc00203f7e2c/a9b8a921-93e1-4653-b314-cd9b892e35ff.png");
+ 
+}
+
+
+
+function setup() {
+  
+  back1=createSprite(300,300,40,40);
+  back1.addImage(junglee);
+  ground=createSprite(300,470,600,20);
+  ground.shapeColor="green";
+  monkey= createSprite(100,415,20,20);
+  monkey.addAnimation("run",monkey_running);
+  monkey.scale=0.15;
+  obstaclesGroup = createGroup();
+  FoodGroup = createGroup();
+  
+}
+
+
+function draw() {
+ createCanvas(600,550);
+ background("lightgreen");
+
+ if(monkey.isTouching(FoodGroup)){
+  
+          score = score+1;
+   
+  }
+  
+     if(gameState===PLAY){
+       
+       
+     
+  s = s + Math.round(getFrameRate()/60);
+   if(keyDown("space")&& monkey.y >= 410) {
+        monkey.velocityY = -17;
+    }
+  //  monkey.collide(obstaclesGroup);
+  if(FoodGroup.isTouching(monkey)){
+    FoodGroup.destroyEach();
+   
+  }
+       if(obstaclesGroup.isTouching(monkey)){
+         gameState = END;
+         
+       }
+          
+  bana();
+ aobstacle();   
+        
+     }
+  if(gameState===END){
+    
+    obstaclesGroup.setVelocityXEach(0);
+    FoodGroup.setVelocityXEach(0);
+    monkey.velocityY=0;
+    FoodGroup.setVelocityEach(0);
+    obstaclesGroup.setLifetimeEach(-2);
+    FoodGroup.setLifetimeEach(-2);
+    
+  }
+    monkey.velocityY = monkey.velocityY + 0.8
+   monkey.collide(ground);
+                                                           
+ drawSprites(); 
+   text("Score: "+ score, 280,100);
+  
+   text("Survival Time: "+ s, 250,50);
+}
+
+function aobstacle(){
+ if (frameCount % 200 === 0){
+    obstacle = createSprite(600,425,10,40);
+    obstacle.velocityX = -5;
+    obstacle.addImage(obstaceImage);   
+    obstacle.scale = 0.19;
+    obstacle.lifetime = 200;
+    obstaclesGroup.add(obstacle);
+ }
+}
+function bana(){
+ if (frameCount % 70 === 0){
+    banana = createSprite(600,225,10,40);
+    banana.velocityX = -5;
+    banana.addImage(bananaImage);   
+    banana.scale = 0.08;
+    banana.lifetime = 200;
+    FoodGroup.add(banana);
+ }
+}
+
+
+
+
+</script>
+  
+
+</body></html>
